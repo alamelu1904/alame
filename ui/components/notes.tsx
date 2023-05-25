@@ -111,3 +111,70 @@ const Example: React.FC = () => {
       });
   };
   
+  const loadMenu = (data: any, appId: string, appIddesc: string): void => {
+    console.log('loadMenu--', data.menuText);
+    var menuObj = JSON.parse('[' + data.menuText + ']');
+    console.log('menuObj--', menuObj);
+    let sideMenus = state.navigateMenu;
+    let moreMenuTemp = state.moreMenuLst;
+    var depLvl = 1;
+    let sideMenuItem = {
+      id: appIddesc,
+      nodeTemplate: true,
+      appId: appId,
+      name: appIddesc,
+      children: [],
+      hasSettingIcon: true,
+    };
+  
+    menuObj.map((menu: any) => {
+      let menuTemp: any = {};
+      menuTemp['id'] = sideMenuItem.id + '/' + menu.text;
+      menuTemp['pid'] = sideMenuItem.id;
+      sideMenuItem['hasChild'] = true;
+      menuTemp['name'] = menu.text;
+  
+      if (menu.submenu != null && menu.submenu.itemdata.length > 0) {
+        menuTemp['children'] = [];
+        menu.submenu.itemdata.map((menu1: any) => {
+          let menuTemp1: any = {};
+          menuTemp1['id'] = menuTemp['id'] + '/' + menu1.text;
+          menuTemp1['more_id'] = menuTemp['name'] + '-' + menu1.text;
+          moreMenuTemp[menuTemp['name'] + '-' + menu1.text] = {};
+          menuTemp1['pid'] = menuTemp['id'];
+          menuTemp1['name'] = menu1.text;
+          menuTemp1['dispalyMore'] = true;
+          menuTemp['hasChild'] = true;
+  
+          if (menu1.submenu != null && menu1.submenu.itemdata.length > 0) {
+            menuTemp1['children'] = [];
+            menu1.submenu.itemdata.map((menu2: any) => {
+              let menuTemp2: any = {};
+              menuTemp1['hasChild'] = true;
+              menuTemp2['dispalyMore'] = true;
+              menuTemp1['more_id'] = menuTemp1['name'];
+              menuTemp2['id'] = menuTemp1['id'] + '/' + menu2.text;
+              menuTemp2['pid'] = menuTemp1['id'];
+              menuTemp2['name'] = menu2.text;
+              menuTemp2['appId'] = appId;
+              menuTemp2['onclick'] = menu2.onclick;
+  
+              let str = menu2.onclick;
+              let clickobj = str.substring(str.indexOf('(') + 1, str.lastIndexOf(')')).split('\',\'');
+              menuTemp2['filterType'] = clickobj[0].replace(/'/g, '');
+              menuTemp2['transType'] = clickobj[1];
+              menuTemp2['displayCategory'] = clickobj[2];
+              menuTemp2['queryNameValue'] = clickobj[3];
+              menuTemp2['appId'] = clickobj[4];
+              menuTemp2['env'] = clickobj[5].replace(/'/g, '');
+              menuTemp2['appIdDesc'] = appIddesc;
+              menuTemp2['IsTabToBeOpen'] = true;
+  
+              menuTemp1['children'].push(menuTemp2);
+            });
+          }
+          moreMenuTemp[menuTemp['name'] + '-' + menu1.text] = menuTemp1;
+          menuTemp['children'].push(menuTemp1);
+        });
+      }
+  
