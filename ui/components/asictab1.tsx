@@ -3,7 +3,40 @@ import { Grid, TextField, Select, MenuItem, Autocomplete } from '@mui/material';
 
 // ...
 
+const fetchLookupOptions = async (action: string, paramdet: string, applicid: string) => {
+    try {
+      const response = await fetch('your_api_url', {
+        method: 'POST', // or 'GET', 'PUT', etc. depending on your API
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action, paramdet, applicid }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error fetching lookup options');
+      }
+  
+      const data = await response.json();
+  
+      // Assuming the response contains an array of options
+      const options = data.lookupOptions;
+  
+      return options;
+    } catch (error) {
+      console.error('Error fetching lookup options:', error);
+      throw error;
+    }
+  };
+  
 const renderFields = () => {
+    const totalElements = childfrmdetails.length;
+    const itemsPerColumn = Math.ceil(totalElements / 6); // Calculate the number of items per column
+  
+    const columns = Array.from({ length: 6 }, (_, i) => {
+      const startIndex = i * itemsPerColumn;
+      const endIndex = Math.min((i + 1) * itemsPerColumn, totalElements);
+  
   const totalElements = childfrmdetails.length;
   const itemsPerColumn = Math.ceil(totalElements / 6); // Calculate the number of items per column
 
