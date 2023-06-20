@@ -6,11 +6,30 @@ const YourComponent = () => {
   const childfrmdetails: any[] = []; // Update with your actual data
 
   useEffect(() => {
-    childfrmdetails.forEach((field) => {
+    childfrmdetails.forEach(async (field) => {
       const { datatype, lookupdetailsvo } = field;
 
       if (lookupdetailsvo && lookupdetailsvo.customlookup && lookupdetailsvo.paramdet) {
-        setOptions(lookupdetailsvo.lookupvalues);
+        try {
+          const response = await fetch('your_api_endpoint', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              action: lookupdetailsvo.action,
+              parameterdetails: lookupdetailsvo.parameterdetails,
+              appid: bltrobj['appid'],
+            }),
+          });
+
+          const data = await response.json();
+          if (Array.isArray(data)) {
+            setOptions(data);
+          }
+        } catch (error) {
+          console.error('Error fetching options:', error);
+        }
       } else if (lookupdetailsvo && lookupdetailsvo.lookupvalues && lookupdetailsvo.lookupvalues.length > 0) {
         setOptions(lookupdetailsvo.lookupvalues);
       }
