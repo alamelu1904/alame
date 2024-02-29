@@ -40,7 +40,7 @@ const XmlViewer = ({ xml }) => {
       return (
         <div key={nodePath}>
           <div onClick={() => handleToggle(nodePath)} style={{ cursor: 'pointer' }}>
-            {indentation}&lt;{node.name}&gt;{node.text.trim()}&lt;/{node.name}&gt;
+            {indentation}&lt;{node.name}&gt;{node.text.trim()}{`&lt;/${node.name}&gt;`}
           </div>
         </div>
       );
@@ -66,10 +66,8 @@ const XmlViewer = ({ xml }) => {
         )}
       </div>
     );
-  };
+  };  
   
-  
- 
   const xmlObject = xml2js(xml, { compact: false });
 
   return (
