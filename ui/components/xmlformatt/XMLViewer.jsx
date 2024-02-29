@@ -19,7 +19,7 @@ const XmlViewer = ({ xml }) => {
     if (!node.elements) {
       return (
         <div key={nodePath}>
-          &lt;{node.name}&gt; {node.elements ? '' : node.text} &lt;/{node.name}&gt;
+          &lt;{node.name}&gt; {node.elements ? '' : node.elements[0].text} {isExpanded ? `&lt;/${node.name}&gt;` : ''}
         </div>
       );
     }
@@ -34,7 +34,7 @@ const XmlViewer = ({ xml }) => {
             {node.elements.map((child, index) => renderNode(child, [...path, index.toString()]))}
           </div>
         )}
-        <div>{`</${node.name}>`}</div>
+        {isExpanded && <div>&lt;/{node.name}&gt;</div>}
       </div>
     );
   };
