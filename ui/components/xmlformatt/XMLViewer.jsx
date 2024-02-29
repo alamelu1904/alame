@@ -32,7 +32,7 @@ const XmlViewer = ({ xml }) => {
   const renderNode = (node, path) => {
     const nodePath = path.join('/');
     const isExpanded = expandedNodes.includes(nodePath);
-  
+
     if (!node.elements) {
       return (
         <div key={nodePath}>
@@ -42,7 +42,7 @@ const XmlViewer = ({ xml }) => {
         </div>
       );
     }
-  
+
     return (
       <div key={nodePath}>
         <div onClick={() => handleToggle(nodePath)} style={{ cursor: 'pointer' }}>
@@ -57,6 +57,14 @@ const XmlViewer = ({ xml }) => {
       </div>
     );
   };
-  
+
+  const xmlObject = xml2js(xml, { compact: false });
+
+  return (
+    <pre>
+      {xmlObject.elements.map((node, index) => renderNode(node, [index.toString()]))}
+    </pre>
+  );
+};
 
 export default XmlViewer;
