@@ -39,10 +39,9 @@ const XmlViewer = ({ xml }) => {
       // Leaf node: render the node name and text directly
       return (
         <div key={nodePath}>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-            <div style={{ marginLeft: `${indentation.length * 8}px` }}>
-              &lt;{node.name}&gt; {node.text.trim()} &lt;/{node.name}&gt;
-            </div>
+          <div onClick={() => handleToggle(nodePath)} style={{ cursor: 'pointer' }}>
+            {indentation}
+            &lt;{node.name}&gt;{node.text.trim()}&lt;/{node.name}&gt;
           </div>
         </div>
       );
@@ -69,10 +68,7 @@ const XmlViewer = ({ xml }) => {
       </div>
     );
   };
-  
-  
-  
-  
+ 
 
   const xmlObject = xml2js(xml, { compact: false });
 
