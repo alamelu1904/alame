@@ -32,17 +32,17 @@ const XmlViewer = ({ xml }) => {
   const renderNode = (node, path) => {
     const nodePath = path.join('/');
     const isExpanded = expandedNodes.includes(nodePath);
-
+  
     if (!node.elements) {
       return (
         <div key={nodePath}>
           <div onClick={() => handleToggle(nodePath)} style={{ cursor: 'pointer' }}>
-            {isExpanded ? '▼' : '►'} &lt;{node.name}&gt; {node.text} {isExpanded && `&lt;/${node.name}&gt;`}
+            {isExpanded ? '▼' : '►'} &lt;{node.name}&gt; {node.text} {isExpanded ? `&lt;/${node.name}&gt;` : ''}
           </div>
         </div>
       );
     }
-
+  
     return (
       <div key={nodePath}>
         <div onClick={() => handleToggle(nodePath)} style={{ cursor: 'pointer' }}>
@@ -57,6 +57,7 @@ const XmlViewer = ({ xml }) => {
       </div>
     );
   };
+  
 
   const xmlObject = xml2js(xml, { compact: false });
 
