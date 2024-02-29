@@ -39,10 +39,10 @@ const XmlViewer = ({ xml }) => {
       // Leaf node: render the node name and text directly
       return (
         <div key={nodePath}>
-          <div onClick={() => handleToggle(nodePath)} style={{ cursor: 'pointer' }}>
-            {indentation}
-            {isExpanded ? '▼ ' : '► '}
-            &lt;{node.name}&gt; {node.text.trim()} &lt;/{node.name}&gt;
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ marginLeft: `${indentation.length * 8}px` }}>
+              &lt;{node.name}&gt; {node.text.trim()} &lt;/{node.name}&gt;
+            </div>
           </div>
         </div>
       );
