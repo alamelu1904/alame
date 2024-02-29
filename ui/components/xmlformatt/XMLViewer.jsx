@@ -19,7 +19,7 @@ const XmlViewer = ({ xml }) => {
     if (!node.elements) {
       return (
         <div key={nodePath}>
-          &lt;{node.name}&gt; {node.elements ? '' : node.elements[0].text} {isExpanded ? `&lt;/${node.name}&gt;` : ''}
+          &lt;{node.name}&gt; {node.elements ? '' : node.text} {isExpanded ? `&lt;/${node.name}&gt;` : ''}
         </div>
       );
     }
