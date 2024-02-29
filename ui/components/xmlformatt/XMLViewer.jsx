@@ -29,35 +29,47 @@ const XmlViewer = ({ xml }) => {
     }
   };
 
-  const renderNode = (node, path) => {
+  const renderNode = (node, path, level = 0) => {
     const nodePath = path.join('/');
     const isExpanded = expandedNodes.includes(nodePath);
-    
-    if (!node.elements) {
-        // Leaf node: render the node name and text directly
-        return (
-          <div key={nodePath}>
-            <div onClick={() => handleToggle(nodePath)} style={{ cursor: 'pointer' }}>
-              {isExpanded ? '▼' : '►'} &lt;{node.name}&gt; {node.text.trim()} &lt;/{node.name}&gt;
-            </div>
-          </div>
-        );
-      }
   
+    const indentation = '  '.repeat(level); // Two spaces for each level of indentation
+  
+    if (!node.elements) {
+      // Leaf node: render the node name and text directly
+      return (
+        <div key={nodePath}>
+          <div onClick={() => handleToggle(nodePath)} style={{ cursor: 'pointer' }}>
+            {indentation}
+            {isExpanded ? '▼ ' : '► '}
+            &lt;{node.name}&gt; {node.text.trim()} &lt;/{node.name}&gt;
+          </div>
+        </div>
+      );
+    }
+  
+    // Non-leaf node: render children recursively with proper indentation
     return (
       <div key={nodePath}>
         <div onClick={() => handleToggle(nodePath)} style={{ cursor: 'pointer' }}>
-          {isExpanded ? '▼' : '►'} &lt;{node.name}&gt;
+          {indentation}
+          {isExpanded ? '▼ ' : '► '}
+          &lt;{node.name}&gt;
         </div>
         {isExpanded && (
           <div style={{ marginLeft: '20px' }}>
-            {node.elements.map((child, index) => renderNode(child, [...path, index.toString()]))}
+            {node.elements.map((child, index) => renderNode(child, [...path, index.toString()], level + 1))}
           </div>
         )}
-        {isExpanded && <div>&lt;/{node.name}&gt;</div>}
+        {isExpanded && (
+          <div>
+            {indentation}&lt;/{node.name}&gt;
+          </div>
+        )}
       </div>
     );
   };
+  
   
   
   
