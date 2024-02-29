@@ -34,10 +34,11 @@ const XmlViewer = ({ xml }) => {
     const isExpanded = expandedNodes.includes(nodePath);
   
     if (!node.elements) {
+      // Leaf node: render the node name and text directly
       return (
         <div key={nodePath}>
           <div onClick={() => handleToggle(nodePath)} style={{ cursor: 'pointer' }}>
-            {isExpanded ? '▼' : '►'} &lt;{node.name}&gt; {node.text} {isExpanded ? `&lt;/${node.name}&gt;` : ''}
+            {isExpanded ? '▼' : '►'} &lt;{node.name}&gt; {node.text.trim()} &lt;/{node.name}&gt;
           </div>
         </div>
       );
@@ -57,6 +58,7 @@ const XmlViewer = ({ xml }) => {
       </div>
     );
   };
+  
   
 
   const xmlObject = xml2js(xml, { compact: false });
