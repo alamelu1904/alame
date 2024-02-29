@@ -1,8 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { xml2js } from 'xml-js';
 
 const XmlViewer = ({ xml }) => {
   const [expandedNodes, setExpandedNodes] = useState([]);
+
+  useEffect(() => {
+    // Set initial state to expand all nodes
+    const xmlObject = xml2js(xml, { compact: false });
+    const nodePaths = [];
+
+    const traverseNodes = (node, path) => {
+      nodePaths.push(path.join('/'));
+      if (node.elements) {
+        node.elements.forEach((child, index) => traverseNodes(child, [...path, index]));
+      }
+    };
+
+    xmlObject.elements.forEach((node, index) => traverseNodes(node, [index.toString()]));
+
+    setExpandedNodes(nodePaths);
+  }, [xml]);
 
   const handleToggle = (nodePath) => {
     if (expandedNodes.includes(nodePath)) {
@@ -19,7 +36,9 @@ const XmlViewer = ({ xml }) => {
     if (!node.elements) {
       return (
         <div key={nodePath}>
-          &lt;{node.name}&gt; {node.elements ? '' : node.text} {isExpanded ? `&lt;/${node.name}&gt;` : ''}
+          <div onClick={() => handleToggle(nodePath)} style={{ cursor: 'pointer' }}>
+            {isExpanded ? '▼' : '►'} &lt;{node.name}&gt; {node.elements ? '' : node.text} {isExpanded ? `&lt;/${node.name}&gt;` : ''}
+          </div>
         </div>
       );
     }
