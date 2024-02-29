@@ -37,7 +37,7 @@ const XmlViewer = ({ xml }) => {
       return (
         <div key={nodePath}>
           <div onClick={() => handleToggle(nodePath)} style={{ cursor: 'pointer' }}>
-            {isExpanded ? '▼' : '►'} &lt;{node.name}&gt; {node.elements ? '' : node.text} {isExpanded ? `&lt;/${node.name}&gt;` : ''}
+            {isExpanded ? '▼' : '►'} &lt;{node.name}&gt; {isExpanded && node.elements ? node.elements[0].text : node.text} {isExpanded ? `&lt;/${node.name}&gt;` : ''}
           </div>
         </div>
       );
