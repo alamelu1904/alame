@@ -1,0 +1,39 @@
+import React, { Component } from 'react';
+import { Slate, Editable, withReact } from 'slate-react';
+import { createEditor } from 'slate';
+
+class MyEditor extends Component {
+  constructor(props) {
+    super(props);
+    // Assuming your JSON data is something like this
+    const jsonData = [
+      {
+        type: 'paragraph',
+        children: [{ text: 'This is the initial content from JSON.' }],
+      },
+    ];
+
+    this.state = {
+      content: jsonData,
+    };
+    this.editor = withReact(createEditor());
+  }
+
+  handleChange = (newValue) => {
+    this.setState({ content: newValue });
+  };
+
+  render() {
+    return (
+      <Slate
+        editor={this.editor}
+        value={this.state.content}
+        onChange={this.handleChange}
+      >
+        <Editable />
+      </Slate>
+    );
+  }
+}
+
+export default MyEditor;
