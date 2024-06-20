@@ -167,7 +167,7 @@ class YourComponent extends Component {
                 <CKEditor
                     data="<p>Initial content</p>"
                     onInstanceReady={(editor) => {
-                        CKEDITOR.instances['content1'] = editor.editorInstance;
+                        CKEDITOR.instances['content1'] = editor.editorInstance; 
                     }}
                     onChange={this.handleEditorChange}
                 />
