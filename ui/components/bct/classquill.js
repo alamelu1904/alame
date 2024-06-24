@@ -1,0 +1,79 @@
+import React from 'react';
+import ReactQuill, { Quill } from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { Table, TableRow, TableCell } from './Table';
+
+Quill.register(Table);
+Quill.register(TableRow);
+Quill.register(TableCell);
+
+class TextEditor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      content: '',
+    };
+    this.quillRef = React.createRef();
+    this.handleChange = this.handleChange.bind(this);
+    this.insertTable = this.insertTable.bind(this);
+  }
+
+  handleChange(value) {
+    this.setState({ content: value });
+  }
+
+  insertTable() {
+    const quill = this.quillRef.current.getEditor();
+    const range = quill.getSelection();
+    if (range) {
+      const tableHTML = `
+        <table>
+          <tr><td>Cell 1</td><td>Cell 2</td></tr>
+          <tr><td>Cell 3</td><td>Cell 4</td></tr>
+        </table>`;
+      const delta = quill.clipboard.convert(tableHTML);
+      quill.updateContents(delta, Quill.sources.USER);
+    }
+  }
+
+  render() {
+    const modules = {
+      toolbar: {
+        container: [
+          [{ 'header': [1, 2, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote', 'code-block'],
+          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+          [{ 'script': 'sub' }, { 'script': 'super' }],
+          [{ 'indent': '-1' }, { 'indent': '+1' }],
+          [{ 'direction': 'rtl' }],
+          [{ 'size': ['small', false, 'large', 'huge'] }],
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'font': [] }],
+          [{ 'align': [] }],
+          ['link', 'image', 'video'],
+          ['clean'],
+          [{ 'table': 'insert' }],
+        ],
+        handlers: {
+          table: this.insertTable,
+        },
+      },
+    };
+
+    return (
+      <div>
+        <ReactQuill
+          ref={this.quillRef}
+          value={this.state.content}
+          onChange={this.handleChange}
+          modules={modules}
+          theme="snow"
+        />
+      </div>
+    );
+  }
+}
+
+export default TextEditor;
