@@ -1,8 +1,11 @@
 fetch('your-api-endpoint')
   .then(response => response.text())  // Get the response as text
   .then(text => {
+    // Fix missing commas between objects
+    const withCommasBetweenObjects = text.replace(/}\s*{/g, '},{');
+
     // Sanitize the JSON string using a regex
-    const sanitizedText = text.replace(/,\s*(?=[}\]])|,\s*(?=,)|,\s*(?={)|(?<=\{[^{}]*),\s*(?=,)/g, '');
+    const sanitizedText = withCommasBetweenObjects.replace(/,\s*(?=[}\]])|,\s*(?=,)|(?<=\{[^{}]*),\s*(?=,)|(?<=\{)\s*,/g, '');
 
     try {
       // Parse the sanitized JSON string
