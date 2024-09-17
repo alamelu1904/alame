@@ -1,57 +1,57 @@
-public void setUploadFileName(String uploadFileName) {
-    this.uploadFileName = uploadFileName;
-}
+// public void setUploadFileName(String uploadFileName) {
+//     this.uploadFileName = uploadFileName;
+// }
 
-public String execute() throws BrowserException {
-    try {
-        super.execute();
+// public String execute() throws BrowserException {
+//     try {
+//         super.execute();
 
-        if (fileSizeExceeded()) {
-            this.setErrMsg("File size should not exceed 5 MB");
-            return SUCCESS;
-        }
+//         if (fileSizeExceeded()) {
+//             this.setErrMsg("File size should not exceed 5 MB");
+//             return SUCCESS;
+//         }
 
-        String userID = getUser().getUserID();
-        String templateName = getAppID() + "\\" + userID + "\\" + "BrokerCommunicationTool" + "\\" + uploadFileName.toUpperCase();
-        BrowserPersistVO browserPersistVO = new BrowserPersistVO();
-        browserPersistVO.setFileName(templateName);
-        browserPersistVO.setBlobData(CommonUtils.getBytesFromFile(upload));
-        BrowserPersistDAO browserDao = new BrowserPersistDAO(getEnv());
-        browserDao.insertRow(browserPersistVO);
+//         String userID = getUser().getUserID();
+//         String templateName = getAppID() + "\\" + userID + "\\" + "BrokerCommunicationTool" + "\\" + uploadFileName.toUpperCase();
+//         BrowserPersistVO browserPersistVO = new BrowserPersistVO();
+//         browserPersistVO.setFileName(templateName);
+//         browserPersistVO.setBlobData(CommonUtils.getBytesFromFile(upload));
+//         BrowserPersistDAO browserDao = new BrowserPersistDAO(getEnv());
+//         browserDao.insertRow(browserPersistVO);
 
-    } catch (Exception e) {
-        LogUtil.getInstance().severe("Exception raised in FileUploadAction = User: " + getUser().getUserID(), e, this);
-        return SUCCESS;
-    }
-    return SUCCESS;
-}
+//     } catch (Exception e) {
+//         LogUtil.getInstance().severe("Exception raised in FileUploadAction = User: " + getUser().getUserID(), e, this);
+//         return SUCCESS;
+//     }
+//     return SUCCESS;
+// }
 
-private boolean fileSizeExceeded() {
-    long byteFor5mb = 5242880;
-    if (upload.length() > byteFor5mb) {
-        return true;
-    }
-    return false;
-}
+// private boolean fileSizeExceeded() {
+//     long byteFor5mb = 5242880;
+//     if (upload.length() > byteFor5mb) {
+//         return true;
+//     }
+//     return false;
+// }
 
-public String removeFile() {
-    try {
-        super.execute();
-        String userID = getUser().getUserID();
-        String appID = !CommonUtils.isEmpty(getAppID()) ? getAppID() : getRequest().getParameter("appId");
-        uploadFileName = !CommonUtils.isEmpty(uploadFileName) ? uploadFileName : getRequest().getParameter("uploadFileName");
-        String templateName = appID + "\\" + userID + "\\" + "BrokerCommunicationTool" + "\\" + uploadFileName.toUpperCase();
-        BrowserPersistVO browserPersistVO = new BrowserPersistVO();
-        browserPersistVO.setFileName(templateName);
-        browserPersistVO.setLastUpdatedUserId(userID);
-        BrowserPersistDAO browserDao = new BrowserPersistDAO(getEnv());
-        browserDao.deleteRow(browserPersistVO);
-    } catch (Exception e) {
-        LogUtil.getInstance().severe("Exception raised in FileUploadAction: removeFile() = User: " + getUser().getUserID(), e, this);
-        return SUCCESS;
-    }
-    return SUCCESS;
-}
+// public String removeFile() {
+//     try {
+//         super.execute();
+//         String userID = getUser().getUserID();
+//         String appID = !CommonUtils.isEmpty(getAppID()) ? getAppID() : getRequest().getParameter("appId");
+//         uploadFileName = !CommonUtils.isEmpty(uploadFileName) ? uploadFileName : getRequest().getParameter("uploadFileName");
+//         String templateName = appID + "\\" + userID + "\\" + "BrokerCommunicationTool" + "\\" + uploadFileName.toUpperCase();
+//         BrowserPersistVO browserPersistVO = new BrowserPersistVO();
+//         browserPersistVO.setFileName(templateName);
+//         browserPersistVO.setLastUpdatedUserId(userID);
+//         BrowserPersistDAO browserDao = new BrowserPersistDAO(getEnv());
+//         browserDao.deleteRow(browserPersistVO);
+//     } catch (Exception e) {
+//         LogUtil.getInstance().severe("Exception raised in FileUploadAction: removeFile() = User: " + getUser().getUserID(), e, this);
+//         return SUCCESS;
+//     }
+//     return SUCCESS;
+// }
 
 
 import React, { Component } from 'react';
