@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import CKEditor from 'ckeditor4-react';
 
 class SaveBrokerRecipientDetails extends Component {
@@ -28,9 +27,15 @@ class SaveBrokerRecipientDetails extends Component {
         content: this.state.content,
       };
 
-      axios.post(url, args)
-        .then((response) => {
-          const data = response.data;
+      fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(args),
+      })
+        .then((response) => response.json())
+        .then((data) => {
           if (data.errorMessage) {
             this.showErrors(data.errorMessage);
           } else {
@@ -51,7 +56,7 @@ class SaveBrokerRecipientDetails extends Component {
           }
         })
         .catch((error) => {
-          console.error("There was an error saving broker details!", error);
+          console.error('There was an error saving broker details!', error);
         });
     }
   };
