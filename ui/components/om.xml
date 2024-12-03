@@ -1,0 +1,22 @@
+<build>
+    <resources>
+        <!-- Include resources from src/main/resources -->
+        <resource>
+            <directory>src/main/resources</directory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+        </resource>
+
+        <!-- Include files from WEB-INF -->
+        <resource>
+            <directory>src/main/webapp</directory>
+            <includes>
+                <include>WEB-INF/cfg/**</include>
+                <include>WEB-INF/cache/**</include>
+                <include>WEB-INF/dat/**</include>
+            </includes>
+            <targetPath>WEB-INF</targetPath>
+        </resource>
+    </resources>
+</build>
