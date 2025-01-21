@@ -1,0 +1,54 @@
+import React, { useState, useEffect } from "react";
+
+const MyComponent = () => {
+  const [functions, setFunctions] = useState({});
+
+  useEffect(() => {
+    // Simulate fetching script
+    const fetchScript = async () => {
+      const response = {
+        validationFn: "return input > 10;",
+        anotherValidationFn: "return input % 2 === 0;",
+      };
+
+      // Convert script into executable functions
+      const parsedFunctions = {};
+      for (const [key, value] of Object.entries(response)) {
+        parsedFunctions[key] = new Function("input", value);
+      }
+      setFunctions(parsedFunctions);
+    };
+
+    fetchScript();
+  }, []);
+
+  const validate = (functionName, input) => {
+    const fn = functions[functionName];
+    if (!fn) {
+      console.error(`Function ${functionName} not found`);
+      return false;
+    }
+    return fn(input);
+  };
+
+  return (
+    <div>
+      <button
+        onClick={() =>
+          console.log("Validation:", validate("validationFn", 15))
+        }
+      >
+        Validate Input > 10
+      </button>
+      <button
+        onClick={() =>
+          console.log("Validation:", validate("anotherValidationFn", 14))
+        }
+      >
+        Validate Input is Even
+      </button>
+    </div>
+  );
+};
+
+export default MyComponent;
