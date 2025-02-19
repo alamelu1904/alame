@@ -56,3 +56,57 @@ promisData.then(res => {
 }).catch(error => {
     console.error("Error fetching data:", error);
 });
+
+
+
+promisData.then(res => {
+    console.log("Full Response:", res);
+
+    if (Array.isArray(res) && res.length > 0) {
+        res.forEach((obj, objIndex) => {
+            if (Array.isArray(obj.lookupData) && obj.lookupData.length > 0) {
+                obj.lookupData.forEach((lookup, lookupIndex) => {
+                    console.log(`Object ${objIndex}, Lookup ${lookupIndex} - Filter ID:`, lookup?.filterId);
+                });
+            } else {
+                console.log(`Object ${objIndex} - lookupData is missing or empty.`);
+            }
+        });
+    } else {
+        console.log("Response is not a valid array or is empty.");
+    }
+}).catch(error => {
+    console.error("Error fetching data:", error);
+});
+
+
+promisData.then(res => {
+    const filterIds = [];
+
+    if (Array.isArray(res) && res.length > 0) {
+        res.forEach(obj => {
+            if (Array.isArray(obj.lookupData)) {
+                obj.lookupData.forEach(lookup => {
+                    if (lookup?.filterId) {
+                        filterIds.push(lookup.filterId);
+                    }
+                });
+            }
+        });
+    }
+
+    console.log("All Filter IDs:", filterIds);
+}).catch(error => {
+    console.error("Error fetching data:", error);
+});
+
+
+promisData.then(res => {
+    res?.forEach(obj => 
+        obj?.lookupData?.forEach(lookup => 
+            console.log("Filter ID:", lookup?.filterId ?? "No filterId found")
+        )
+    );
+}).catch(error => {
+    console.error("Error fetching data:", error);
+});
