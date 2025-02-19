@@ -109,6 +109,21 @@ fetchData = () => {
         this.setState({ error: "Failed to fetch data", data: [] });
       });
   };
+
+  replaceLabelWithDataKey = (data) => {
+    if (!Array.isArray(data)) {
+      console.warn("Expected an array, but received:", data);
+      return [];
+    }
+  
+    return data.map((obj) => {
+      if (obj.hasOwnProperty("label")) {
+        return { ...obj, dataKey: obj.label, label: undefined }; // Rename key
+      }
+      return obj; // Return unchanged if no "label" key exists
+    });
+  };
+  
   
 
 export default JsonFixer;
