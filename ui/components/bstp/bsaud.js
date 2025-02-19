@@ -76,4 +76,39 @@ class JsonFixer extends Component {
   }
 }
 
+fetchData = () => {
+    fetch("https://yourapi.com/endpoint") // Replace with your actual API URL
+      .then((response) => response.text()) // Get raw string response
+      .then((rawData) => {
+        try {
+          const fixedData = this.fixInvalidJson(rawData); // Fix invalid JSON
+          let parsedData = JSON.parse(fixedData); // Convert to array
+  
+          // Ensure parsedData is an array
+          if (!Array.isArray(parsedData)) {
+            console.warn("Parsed data is not an array. Converting...");
+            parsedData = [parsedData]; // Wrap object in an array
+          }
+  
+          // ✅ Replace "label" with "dataKey" in each object
+          const updatedData = parsedData.map(obj => {
+            if (obj.hasOwnProperty("label")) {
+              return { ...obj, dataKey: obj.label, label: undefined }; // Rename key
+            }
+            return obj; // Return unchanged if no "label" key exists
+          });
+  
+          this.setState({ data: updatedData }); // Update state with modified JSON
+        } catch (error) {
+          console.error("Final JSON Parsing Failed:", error);
+          this.setState({ error: "Failed to parse JSON", data: [] });
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch Error:", error);
+        this.setState({ error: "Failed to fetch data", data: [] });
+      });
+  };
+  
+
 export default JsonFixer;
