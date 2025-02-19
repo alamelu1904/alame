@@ -16,3 +16,17 @@ promisData.then(res => {
     console.log("First Lookup Entry:", firstLookupItem);
     console.log("Filter ID:", filterID);
 });
+promisData.then(res => {
+    console.log("Full Response:", res);
+
+    // Directly access lookupData if res is an object
+    const lookupArray = res.lookupData; 
+
+    if (lookupArray && lookupArray.length > 0) {
+        const firstLookupItem = lookupArray[0]; // Get first item in lookupData
+        console.log("First Lookup Entry:", firstLookupItem);
+        console.log("Filter ID:", firstLookupItem?.filterID);
+    } else {
+        console.log("No lookupData found");
+    }
+});
