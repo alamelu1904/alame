@@ -30,3 +30,29 @@ promisData.then(res => {
         console.log("No lookupData found");
     }
 });
+
+
+
+promisData.then(res => {
+    if (Array.isArray(res)) {
+        // If `res` is an array, iterate through each object
+        res.forEach((item, index) => {
+            if (Array.isArray(item.lookupData)) {
+                item.lookupData.forEach((lookup, idx) => {
+                    console.log(`Object ${index}, Lookup ${idx} - Filter ID:`, lookup?.filterId);
+                });
+            }
+        });
+    } else if (typeof res === "object" && res !== null) {
+        // If `res` is a single object, access `lookupData` directly
+        if (Array.isArray(res.lookupData)) {
+            res.lookupData.forEach((lookup, idx) => {
+                console.log(`Lookup ${idx} - Filter ID:`, lookup?.filterId);
+            });
+        }
+    } else {
+        console.log("Unexpected response format.");
+    }
+}).catch(error => {
+    console.error("Error fetching data:", error);
+});
