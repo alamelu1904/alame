@@ -58,7 +58,7 @@ promisData.then(res => {
 });
 
 
-
++
 promisData.then(res => {
     console.log("Full Response:", res);
 
@@ -107,6 +107,21 @@ promisData.then(res => {
             console.log("Filter ID:", lookup?.filterId ?? "No filterId found")
         )
     );
+}).catch(error => {
+    console.error("Error fetching data:", error);
+});
+
+
+promisData.then(res => {
+    const resArray = Object.values(res); // Convert object into array
+
+    resArray.forEach(obj => {
+        if (Array.isArray(obj.lookupData)) {
+            obj.lookupData.forEach(lookup => {
+                console.log("Filter ID:", lookup?.filterId);
+            });
+        }
+    });
 }).catch(error => {
     console.error("Error fetching data:", error);
 });
